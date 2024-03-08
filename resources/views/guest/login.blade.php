@@ -13,7 +13,7 @@
             <div class="form-group icon-left">
                 <label>Username</label>
                 <div class="input_group">
-                    <input name="username" type="username" class="form-control" placeholder="e. g. &quot;example@mail.com&quot;"
+                    <input name="username" type="username" class="form-control" placeholder="e. g. &quot;user123&quot;"
                         required="">
                     <div class="icon">
                         <i class="ri-mail-open-line"></i>

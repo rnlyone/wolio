@@ -49,10 +49,10 @@ class RiwayatController extends Controller
     {
         $customcss = '';
         $jmlsetting = Setting::where('group', 'env')->get();
-        $settings = ['title' => ': Hasil Kuis',
+        $settings = ['title' => ': Hasil Games',
                      'customcss' => $customcss,
-                     'pagetitle' => 'Hasil Kuis',
-                     'subtitle' => 'Hasil Kuis',
+                     'pagetitle' => 'Hasil Games',
+                     'subtitle' => 'Hasil Games',
                      'navactive' => '',
                      'baractive' => '',
                      'prevpage' => route('kategori.index', ['kuis' => '1'])

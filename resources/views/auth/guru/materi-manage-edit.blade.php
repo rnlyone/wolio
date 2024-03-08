@@ -39,37 +39,58 @@
         <div class="form-group">
             <label>Audio File</label>
             <table id="audiofiles" class="w-100">
-                <tr>
-                    <th>Audio</th>
-                    <th>Caption</th>
-                </tr>
-                @foreach ($audios as $audio)
-                    <tr id="audio[{{$audio->id}}]">
-                        <td style="width: 40%;">
-                            <audio class="w-100" controls>
-                                <source src="/storage/public/audios/{{$audio->audio}}" type="audio/ogg">
-                            </audio>
-                        </td>
-                        <td style="width: 60%;"><span class="mx-1"><span style="word-break: break-word;">{{$audio->caption}}</span></span></td>
-                        <td><button  data-audio-id="{{ $audio->id }}" class="delete-audio" style="width: 35px;height: 35px;display: inline-flex;align-items: center;justify-content: center;font-size: 24px;color: var(--white);background-color: rgba(255,255,255,.12);border-radius: 50%;">
-                            <i class="ri-arrow-drop-right-line"></i>
-                        </button></td>
+                <thead>
+                    <tr>
+                        <th style="border: 1px; color:var(--dark);">Aksara</th>
+                        <th style="border: 1px; color:var(--dark);">Audio</th>
+                        <th style="border: 1px; color:var(--dark);">Latin</th>
+                        <th style="border: 1px; color:var(--dark);">Arti</th>
                     </tr>
-                @endforeach
+                </thead>
+                <tbody>
+                    @foreach ($audios as $audio)
+                        <tr id="audio[{{$audio->id}}]">
+                            <td  style="width: 30%; border: 1px; color:var(--dark);"><span class="mx-1"><span style="word-break: break-word;">{{$audio->aksara}}</span></span></td>
+                            <td style="width: 10%; border: 1px; color:var(--dark);">
+                                <audio id="player{{$audio->id}}" class="w-100"  style="visibility:visible">
+                                    <source src="/storage/public/audios/{{$audio->audio}}" type="audio/ogg">
+                                </audio>
+                                <div style="padding: 10px;min-width:100%" class="btn btn-sm-arrow bg-dark">
+                                    <button class="ico play-button" id="play{{$audio->id}}" onclick="document.getElementById('player{{$audio->id}}').play();"><i class="ri-play-fill"></i></button>
+                                </div>
+                            </td>
+                            <td  style="width: 30%; border: 1px; color:var(--dark);"><span class="mx-1"><span style="word-break: break-word;">{{$audio->latin}}</span></span></td>
+                            <td style="width: 30%; border: 1px; color:var(--dark);"><span class="mx-1"><span style="word-break: break-word;">{{$audio->caption}}</span></span></td>
+                            <td><button  data-audio-id="{{ $audio->id }}" class="delete-audio" style="width: 35px;height: 35px;display: inline-flex;align-items: center;justify-content: center;font-size: 24px;color: var(--white);background-color: rgba(255,255,255,.12);border-radius: 50%;">
+                                <i class="ri-delete-bin-line"></i>
+                            </button></td>
+                        </tr>
+                    @endforeach
+                </tbody>
             </table>
             <table class="w-100">
                 <tr>
-                    <td>
+                    <td rowspan="3" style="width: 40%">
                         <div class="upload-input-form">
                             <input id="addAudio" type="file" name="audio" accept=".mp3, .aac, .wav" maxsize="5242880">
-                            <div class="content-input">
+                            <div class="content-input" style="padding:25% 20px">
                                 <div class="icon"><i class="ri-upload-cloud-line"></i></div>
-                                <span><span id="caption"></span>MP3, AAC, WAV. Max 5mb.</span>
+                                <span><span id="audiofilename" style="word-break: break-word;"></span>MP3, AAC, WAV. Max 5mb.</span>
                             </div>
                         </div>
                     </td>
                     <td>
-                        <textarea class="form-control" name="caption" id="addCaption" cols="30" rows="3"></textarea>
+                        <input class="form-control" name="aksara" id="addAksara" placeholder="Aksara">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input class="form-control" name="latin" id="addLatin" placeholder="Latin">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input class="form-control" name="caption" id="addCaption" placeholder="Arti">
                     </td>
                 </tr>
             </table>
@@ -80,7 +101,7 @@
         </div>
         <div class="pt-3">
             <button id="btnSimpan" class="btn btn-md-arrow bg-green w-100">
-                <p>Simpan <span>(5)</span></p>
+                <p>Simpan</p>
                 <div class="ico">
                     <i class="ri-arrow-drop-right-line"></i>
                 </div>
@@ -103,9 +124,10 @@
         $('#addAudio').on('change', function () {
             // Mengambil nama file yang dipilih
             var fileName = $(this).val().split('\\').pop();
+            console.log('adf');
 
             // Menampilkan nama file di elemen "caption"
-            $('#caption').text(fileName);
+            $('#audiofilename').text(fileName);
         });
 
         $('.delete-audio').on('click', function () {
@@ -189,11 +211,15 @@ function SendAudioFile() {
     }
 
     var caption = $('#addCaption').val();
+    var latin = $('#addLatin').val();
+    var aksara = $('#addAksara').val();
 
     var data = new FormData();
     data.append("_token", "{{ csrf_token() }}");
     data.append("audio", audio);
     data.append("caption", caption);
+    data.append("aksara", aksara);
+    data.append("latin", latin);
 
     // Send the data to the controller
     $.ajax({
@@ -208,10 +234,12 @@ function SendAudioFile() {
 
             var newAudioPath = response.data.audio; // Replace with the actual attribute
             var newCaption = response.data.caption; // Replace with the actual attribute
+            var newAksara = response.data.aksara; // Replace with the actual attribute
+            var newLatin = response.data.latin; // Replace with the actual attribute
             var newAudioId = response.data.id;
 
             // Add audio data to the table
-            addAudioToTable(newAudioPath, newCaption, newAudioId);
+            addAudioToTable(newAudioPath, newCaption, newAksara, newLatin, newAudioId);
         },
         error: function(error) {
             showErrorToast('Gagal Menambah Audio');
@@ -230,20 +258,25 @@ $('#btnTambahAudio').on('click', function() {
     SendAudioFile();
 });
 
-function addAudioToTable(audioPath, caption, Id) {
-    var audioElement = '<tr id="audio['+ Id +']">' +
-        '<td style="width: 40%;">' +
-        '<audio class="w-100" controls>' +
-        '<source src="/storage/public/audios/' + audioPath + '" type="audio/ogg">' +
-        '</audio>' +
-        '</td>' +
-        '<td style="width: 60%;"><span class="mx-1"><span style="word-break: break-word;">' + caption + '</span></span></td>' +
-        '</td>' +
-        '<td><button onclick="deleteAudio('+ Id +')" data-audio-id="' + Id +
-        '" class="delete-audio" style="width: 35px;height: 35px;display: inline-flex;align-items: center;justify-content: center;font-size: 24px;color: var(--white);background-color: rgba(255,255,255,.12);border-radius: 50%;">' +
-        '<i class="ri-arrow-drop-right-line"></i>' +
-        '</button></td>' +
-        '</tr>';
+function addAudioToTable(audioPath, caption, aksara, latin, Id) {
+    var audioElement =
+        `<tr id="audio[`+ Id +`]">`+
+        `<td style="width: 30%; border: 1px; color:var(--dark);"><span class="mx-1"><span style="word-break: break-word;">` + caption + `</span></span></td>`+
+        `<td style="width: 10%; border: 1px; color:var(--dark);">`+
+        `<audio id="player{{$audio->id}}" class="w-100"  style="visibility:visible">`+
+        `<source src="/storage/public/audios/`+ audioPath + `" type="audio/ogg">`+
+        `</audio>`+
+        `<div style="padding: 10px;min-width:100%" class="btn btn-sm-arrow bg-dark">`+
+        `<button class="ico play-button" id="play{{$audio->id}}" onclick="document.getElementById('player{{$audio->id}}').play();"><i class="ri-play-fill"></i></button>`+
+        `</div>`+
+        `</td>`+
+        `<td  style="width: 30%; border: 1px; color:var(--dark);"><span class="mx-1"><span style="word-break: break-word;">` + aksara + `</span></span></td>`+
+        `<td  style="width: 30%; border: 1px; color:var(--dark);"><span class="mx-1"><span style="word-break: break-word;">` + latin + `</span></span></td>`+
+        `<td><button onclick="deleteAudio(`+ Id +`)" data-audio-id="`+ Id +`" class="delete-audio" style="width: 35px;height: 35px;display: inline-flex;align-items: center;justify-content: center;font-size: 24px;color: var(--white);background-color: rgba(255,255,255,.12);border-radius: 50%;">`+
+        `<i class="ri-delete-bin-line"></i>`+
+        `</button></td>`+
+        `</tr>`
+        ;
 
     $('#audiofiles').append(audioElement);
 }

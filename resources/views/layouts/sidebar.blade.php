@@ -80,7 +80,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{$gamesbar ?? ''}}" href="{{route('kuis.index')}}">
+                        <a class="nav-link {{$gamesbar ?? ''}}" href="{{route('kategori.index', ['kuis' => 1])}}">
                             <div class="icon_current">
                                 <i class="ri-gamepad-line"></i>
                             </div>

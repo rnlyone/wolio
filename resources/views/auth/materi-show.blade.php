@@ -27,21 +27,32 @@
         </div>
         @if ($audios->isNotEmpty())
             <div class="form-group pt-3">
-                <table id="audiofiles" class="w-100">
-                    <tr>
-                        <th>Audio</th>
-                        <th>Caption</th>
-                    </tr>
-                    @foreach ($audios as $audio)
+                <table id="audiofiles" class="w-100"  style="border: 1px">
+                    <thead>
                         <tr>
-                            <td style="width: 40%;">
-                                <audio class="w-100" controls>
-                                    <source src="/storage/public/audios/{{$audio->audio}}" type="audio/ogg">
-                                </audio>
-                            </td>
-                            <td><span class="mx-1"><span style="word-break: break-word;">{{$audio->caption}}</span></span></td>
+                            <th style="border: 1px; color:var(--dark);">Aksara</th>
+                            <th style="border: 1px; color:var(--dark);">Audio</th>
+                            <th style="border: 1px; color:var(--dark);">Latin</th>
+                            <th style="border: 1px; color:var(--dark);">Arti</th>
                         </tr>
-                    @endforeach
+                    </thead>
+                    <tbody>
+                        @foreach ($audios as $audio)
+                            <tr>
+                                <td  style="width: 30%; border: 1px; color:var(--dark);"><span class="mx-1"><span style="word-break: break-word;">{{$audio->aksara}}</span></span></td>
+                                <td style="width: 10%; border: 1px; color:var(--dark);">
+                                    <audio id="player{{$audio->id}}" class="w-100"  style="visibility:visible">
+                                        <source src="/storage/public/audios/{{$audio->audio}}" type="audio/ogg">
+                                    </audio>
+                                    <div style="padding: 10px;min-width:100%" class="btn btn-sm-arrow bg-dark">
+                                        <button class="ico play-button" id="play{{$audio->id}}" onclick="document.getElementById('player{{$audio->id}}').play();"><i class="ri-play-fill"></i></button>
+                                    </div>
+                                </td>
+                                <td  style="width: 30%; border: 1px; color:var(--dark);"><span class="mx-1"><span style="word-break: break-word;">{{$audio->latin}}</span></span></td>
+                                <td style="width: 30%; border: 1px; color:var(--dark);"><span class="mx-1"><span style="word-break: break-word;">{{$audio->caption}}</span></span></td>
+                            </tr>
+                        @endforeach
+                    </tbody>
                 </table>
             </div>
         @endif
@@ -68,7 +79,7 @@
             </a>
         </div>
     </div>
-    <div class="footer">
+    {{-- <div class="footer">
         <div class="un-title-default px-0 margin-b-20">
             <div class="text">
                 <h2>Materi Terbaru</h2>
@@ -102,7 +113,7 @@
             </article>
             @endforeach
         </ul>
-    </div>
+    </div> --}}
 </section>
 
 @include('layouts.footer')

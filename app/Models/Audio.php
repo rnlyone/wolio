@@ -13,6 +13,8 @@ class Audio extends Model
         'id_materi',
         'id_soal',
         'audio',
-        'caption'
+        'caption',
+        'aksara',
+        'latin'
     ];
 }

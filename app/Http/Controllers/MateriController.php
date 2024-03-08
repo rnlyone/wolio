@@ -311,6 +311,8 @@ class MateriController extends Controller
             $validatedData = $request->validate([
                 'audio' => 'required|mimes:mp3,aac,wav|max:5120', // Max 5 MB (5120 kilobytes)
                 'caption' => 'required',
+                'aksara' => 'required',
+                'latin' => 'required'
             ]);
 
             // Ambil file audio dari request
@@ -324,6 +326,8 @@ class MateriController extends Controller
                 'id_materi' => $materi->id, // ID Materi yang dikaitkan dengan audio
                 'audio' => $fileName,
                 'caption' => $request->caption,
+                'aksara' => $request->aksara,
+                'latin' => $request->latin
             ]);
             $audio->save();
 
