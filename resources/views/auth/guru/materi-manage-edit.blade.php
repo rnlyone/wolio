@@ -261,7 +261,7 @@ $('#btnTambahAudio').on('click', function() {
 function addAudioToTable(audioPath, caption, aksara, latin, Id) {
     var audioElement =
         `<tr id="audio[`+ Id +`]">`+
-        `<td style="width: 30%; border: 1px; color:var(--dark);"><span class="mx-1"><span style="word-break: break-word;">` + caption + `</span></span></td>`+
+        `<td style="width: 30%; border: 1px; color:var(--dark);"><span class="mx-1"><span style="word-break: break-word;">` + aksara + `</span></span></td>`+
         `<td style="width: 10%; border: 1px; color:var(--dark);">`+
         `<audio id="player{{$audio->id}}" class="w-100"  style="visibility:visible">`+
         `<source src="/storage/public/audios/`+ audioPath + `" type="audio/ogg">`+
@@ -270,8 +270,8 @@ function addAudioToTable(audioPath, caption, aksara, latin, Id) {
         `<button class="ico play-button" id="play{{$audio->id}}" onclick="document.getElementById('player{{$audio->id}}').play();"><i class="ri-play-fill"></i></button>`+
         `</div>`+
         `</td>`+
-        `<td  style="width: 30%; border: 1px; color:var(--dark);"><span class="mx-1"><span style="word-break: break-word;">` + aksara + `</span></span></td>`+
         `<td  style="width: 30%; border: 1px; color:var(--dark);"><span class="mx-1"><span style="word-break: break-word;">` + latin + `</span></span></td>`+
+        `<td  style="width: 30%; border: 1px; color:var(--dark);"><span class="mx-1"><span style="word-break: break-word;">` + caption + `</span></span></td>`+
         `<td><button onclick="deleteAudio(`+ Id +`)" data-audio-id="`+ Id +`" class="delete-audio" style="width: 35px;height: 35px;display: inline-flex;align-items: center;justify-content: center;font-size: 24px;color: var(--white);background-color: rgba(255,255,255,.12);border-radius: 50%;">`+
         `<i class="ri-delete-bin-line"></i>`+
         `</button></td>`+
