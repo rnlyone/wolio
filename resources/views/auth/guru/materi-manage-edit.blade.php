@@ -263,11 +263,11 @@ function addAudioToTable(audioPath, caption, aksara, latin, Id) {
         `<tr id="audio[`+ Id +`]">`+
         `<td style="width: 30%; border: 1px; color:var(--dark);"><span class="mx-1"><span style="word-break: break-word;">` + aksara + `</span></span></td>`+
         `<td style="width: 10%; border: 1px; color:var(--dark);">`+
-        `<audio id="player{{$audio->id}}" class="w-100"  style="visibility:visible">`+
+        `<audio id="player`+ Id +`" class="w-100"  style="visibility:visible">`+
         `<source src="/storage/public/audios/`+ audioPath + `" type="audio/ogg">`+
         `</audio>`+
         `<div style="padding: 10px;min-width:100%" class="btn btn-sm-arrow bg-dark">`+
-        `<button class="ico play-button" id="play{{$audio->id}}" onclick="document.getElementById('player{{$audio->id}}').play();"><i class="ri-play-fill"></i></button>`+
+        `<button class="ico play-button" id="play`+ Id +`" onclick="document.getElementById('player`+ Id +`').play();"><i class="ri-play-fill"></i></button>`+
         `</div>`+
         `</td>`+
         `<td  style="width: 30%; border: 1px; color:var(--dark);"><span class="mx-1"><span style="word-break: break-word;">` + latin + `</span></span></td>`+
